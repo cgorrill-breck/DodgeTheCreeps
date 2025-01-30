@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://p3ahv2qbhvxf"]
+
+[ext_resource type="Script" path="res://projectile.gd" id="1_2rin3"]
+[ext_resource type="Texture2D" uid="uid://cvccl1qhhveop" path="res://art/Cannon Ball.png" id="2_6fcik"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_io6al"]
+radius = 14.0357
+
+[node name="Projectile" type="RigidBody2D"]
+collision_mask = 0
+script = ExtResource("1_2rin3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-20, -15)
+scale = Vector2(3, 3)
+texture = ExtResource("2_6fcik")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_io6al")
