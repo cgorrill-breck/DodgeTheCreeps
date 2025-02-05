@@ -55,5 +55,25 @@ shape = SubResource("CapsuleShape2D_332w7")
 wait_time = 2.0
 one_shot = true
 
+[node name="CooldownTimer" type="Timer" parent="."]
+wait_time = 4.0
+one_shot = true
+
+[node name="BoostParticles" type="CPUParticles2D" parent="."]
+show_behind_parent = true
+emitting = false
+amount = 50
+lifetime = 0.25
+speed_scale = 2.0
+lifetime_randomness = 0.21
+emission_shape = 1
+emission_sphere_radius = 18.45
+angle_min = 15.0
+angle_max = 45.0
+scale_amount_min = 1.5
+scale_amount_max = 3.0
+color = Color(3.27289e-06, 0.856206, 0.856385, 1)
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="Boost_Timer" to="." method="_on_boost_timer_timeout"]
+[connection signal="timeout" from="CooldownTimer" to="." method="_on_cooldown_timer_timeout"]

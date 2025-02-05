@@ -5,7 +5,9 @@ const COOL_DOWN_SPEED = BASE_SPEED * .75
 
 @export var speed = BASE_SPEED #speed in px/sec
 @export var bullet_speed = 400
+
 var screen_size
+var in_cooldown := false
 
 signal hit
 
@@ -20,11 +22,9 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	var velocity = Vector2.ZERO # The player's movement vector.
-
-	if Input.is_action_just_pressed("Boost"):
-		print("boosted")
-		$Boost_Timer.start()
-		
+	
+	handle_boost()
+	
 	# is_action_pressed is better if you need more granular control over direction and velocity
 	if Input.is_action_pressed("move_right"):
 		velocity.x += 1
@@ -52,6 +52,12 @@ func _process(delta: float) -> void:
 	position += velocity * delta
 	position = position.clamp(Vector2.ZERO, screen_size)
 
+func handle_boost():
+	if Input.is_action_just_pressed("Boost") and !in_cooldown:
+		print("boosted")
+		speed = BOOST_SPEED
+		$Boost_Timer.start()
+		$BoostParticles.emitting = true
 	
 func start(pos):
 	position = pos
@@ -68,3 +74,14 @@ func _on_body_entered(body):
 
 func _on_boost_timer_timeout() -> void:
 	print("boost done!")
+	speed = COOL_DOWN_SPEED
+	in_cooldown = true
+	$CooldownTimer.start()
+	$BoostParticles.emitting = false
+	print("in cooldown")
+
+
+func _on_cooldown_timer_timeout() -> void:
+	in_cooldown = false
+	speed = BASE_SPEED
+	print("cooldown done")
